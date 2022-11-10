@@ -1,0 +1,30 @@
+.App {
+    font-family: sans-serif;
+    padding: 16px;
+  }
+  
+  .Crop-Controls {
+    margin-bottom: 10px;
+  }
+  .Crop-Controls > * {
+    margin-bottom: 3px;
+  }
+  
+  img {
+    max-width: 100%;
+  }
+  #zoomer {
+    display: block;
+    width: 50%;
+    margin: 2rem auto;
+  }
+  #image-container{
+    width: 100%;
+  font-size: 0;
+  border: 1px solid #111;
+  overflow: hidden;
+  margin: 0 auto;
+  }
+  #crop-pic{
+    width:100%
+  }
