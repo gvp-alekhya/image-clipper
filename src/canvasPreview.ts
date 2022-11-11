@@ -8,7 +8,7 @@ export async function canvasPreview(
   crop: PixelCrop,
   scale: 1
 ) {
- 
+
   const ctx = canvas.getContext('2d')
  
 
@@ -39,12 +39,15 @@ export async function canvasPreview(
 
   ctx.save()
 
-  //  Move the crop origin to the canvas origin (0,0)
-  ctx.translate(-cropX, -cropY)
-  ctx.translate(centerX, centerY)
+  // Move the crop origin to the canvas origin (0,0)
+   ctx.translate(-cropX, -cropY)
 
-  ctx.scale(scale, scale)
-  ctx.translate(-centerX, -centerY)
+   // Zoom or scale around the center
+   ctx.translate(centerX, centerY)
+
+    ctx.scale(scale, scale)
+    ctx.translate(-centerX, -centerY)
+ 
   
   ctx.drawImage(
     image,

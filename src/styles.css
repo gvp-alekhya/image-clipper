@@ -18,6 +18,11 @@
     width: 50%;
     margin: 2rem auto;
   }
+  #saveBtn {
+    display: block;
+    width: 50%;
+    margin: 2rem auto;
+  }
   #image-container{
     width: 100%;
   font-size: 0;

@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react'
-import Slider, { Range } from 'rc-slider';
-import 'rc-slider/assets/index.css';
+
 
 import ReactCrop, {
-
+  centerCrop,
   Crop,
   PixelCrop,
+  makeAspectCrop
 
 } from 'react-image-crop'
 import { canvasPreview } from './canvasPreview.ts'
@@ -40,18 +40,27 @@ export default function App() {
     }
   }
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-    setCrop({
-      unit: 'px',
-      width: 512,
-      height: 512,
-      locked: true
-    })
+    let crop = centerCrop(
+      makeAspectCrop(
+        {
+          unit: 'px',
+          width: 512,
+          height: 512
+        },
+        1,
+        imageDimensions.width,
+        imageDimensions.height,
+      ),
+      imageDimensions.width,
+      imageDimensions.height,
+    )
+    setCrop(crop)
 
   }
 
   function updateZoom(scale) {
     let style = {
-      webkitTransform: 'scale(' + scale + ')',
+      WebkitTransform: 'scale(' + scale + ')',
       transform: 'scale(' + scale + ')'
     }
     scaleImg(style);
@@ -60,7 +69,7 @@ export default function App() {
   }
   useDebounceEffect(
     async () => {
-      ;
+
       if (
         completedCrop?.width &&
         completedCrop?.height &&
@@ -92,13 +101,7 @@ export default function App() {
 
     <div className="App">
       <div className="Crop-Controls">
-        <input type="file" accept="image/*" onChange={onSelectFile} />
-
-        <div>
-          <a href={blobUrl} download>
-            Save image
-          </a>
-        </div>
+        <input className="form-control" type="file" accept="image/*" onChange={onSelectFile} />
       </div>
       {!!imgSrc && (
         <ReactCrop
@@ -108,27 +111,36 @@ export default function App() {
           locked
         >
           <div id="image-container">
-            <img
+            <img 
               ref={imgRef}
               alt="Crop me"
               src={imgSrc}
               onLoad={onImageLoad}
               style={imgStyle}
-              id = "crop-pic"
+              id="crop-pic"
             />
           </div>
-         
-        </ReactCrop>
-       
-      )}
-      <input type="range" min="1" max="4" hidden={imgRef==null} value={scale} step="0.1" id="zoomer" onChange={(event) => updateZoom(event.target.value)} />
 
+        </ReactCrop>
+        
+
+      )}
+      {!!imgSrc &&
+      <div>
+        <input type="range" min="1" max="4"  step="0.1" id="zoomer" value={scale} onChange={(event) => updateZoom(event.target.value)} />
+       
+          <a href={blobUrl} download className="btn btn-secondary" id="saveBtn">
+            Save crop
+          </a>
+      </div>
+      }
+      
       <div >
         {!!completedCrop && (
           <canvas hidden
             ref={previewCanvasRef}
             style={{
-              border: '1px solid black',
+              border: '16px solid black',
               objectFit: 'contain',
               width: imageDimensions.width,
               height: imageDimensions.height
